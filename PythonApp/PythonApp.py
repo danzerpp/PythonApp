@@ -48,11 +48,11 @@ def in_circle(circles,w,h,less=0):
             in_c=True
     return in_c
 
-image = cv2.imread('C:\\Users\\dodzi\\Downloads\\CHASEDB1\\Image_01L.jpg')
+image = cv2.imread('C:\\Users\\darek\\Desktop\\Pyramid Games\\PythonApp\\PythonApp\\source_pics\\01_h.jpg')
 
 img_height=image.shape[0]
 img_width=image.shape[1]
-image3 = cv2.imread('C:\\Users\\dodzi\\Downloads\\CHASEDB1\\Image_01L.jpg')
+image3 = cv2.imread('C:\\Users\\darek\\Desktop\\Pyramid Games\\PythonApp\\PythonApp\\source_pics\\01_h.jpg')
 
 print(img_height)
 print(img_width)
