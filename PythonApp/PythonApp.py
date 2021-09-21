@@ -9,7 +9,7 @@ def color_filter(img,circles, red, blue):
     img2 = img.copy()
     for w in range(img_width):
         for h in range(img_height):            
-            if(in_circle(circles,w,h)):
+            if(in_circle(circles,w,h)): # tylko dla tych bedących pikselami oka
                 #zwieksz lekko kolor czerwony
                 img2[h,w][2]=min(255,int(img[h,w][2]*red))
                 #zwieksz barwe zielona, proporcjonalnie do jej nasycenia
@@ -18,7 +18,7 @@ def color_filter(img,circles, red, blue):
     #cv2.waitKey(0)
     return img2
 
-def detect_circle(img):
+def detect_circle(img): #poszukuje obrysu oka
      img2=img.copy()
      imgGray=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
      min_length=min(img.shape[0],img.shape[1])
@@ -59,9 +59,8 @@ print(img_width)
 
 circles=detect_circle(image.copy())
 image2=color_filter(image,circles,1.05,1.5)
-#image2frangi=frangi(cv2.cvtColor(image2, cv2.COLOR_BGR2GRAY))
 image3 = color_filter(image,circles,1.05,1.6)
-#image3frangi=frangi(cv2.cvtColor(image3, cv2.COLOR_BGR2GRAY))
+
 fig, ax = plt.subplots(figsize=(6,6))
 
 #cv2.imshow('image2', image2)
@@ -82,7 +81,11 @@ ax.imshow(image2)
 ax=fig.add_subplot(3, 4, 2)
 ax.axis('off')
 ax.imshow(image3)
-
+#               TODO
+#frangi jest w imshow ax, zostaje lekki obrys środkowego jasniejszego punktu - to też kwestia testów
+#czyli ogólnie trzeba teraz: progowanie maski eksperckiej + progowanie(wynik frangiego + usunięta obramka oka)
+#wykrozystanie gotowych funkcji z bibliotek(jest w jego dokumentacji na ekursy) do 3 pomiarów
+# jak to będzie to mamy wszystko, zrobic test dla 3 lepszych wynikow 2 gorszych i odsyłamy
 ax=fig.add_subplot(3, 4, 3)
 ax.axis('off')
 ax.imshow(frangi(cv2.cvtColor(image2, cv2.COLOR_BGR2GRAY)))
