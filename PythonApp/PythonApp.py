@@ -1,5 +1,5 @@
 from skimage.data import camera
-from skimage.filters import frangi, hessian
+from skimage.filters import frangi, hessian, sobel
 import cv2
 import matplotlib.pyplot as plt
 import numpy as np
@@ -48,11 +48,11 @@ def in_circle(circles,w,h,less=0):
             in_c=True
     return in_c
 
-image = cv2.imread('C:\\Users\\darek\\Desktop\\Pyramid Games\\PythonApp\\PythonApp\\source_pics\\01_h.jpg')
+image = cv2.imread('C:\\Users\\darek\\Desktop\\Pyramid Games\\PythonApp\\PythonApp\\source_pics\\Image_05L.jpg')
 
 img_height=image.shape[0]
 img_width=image.shape[1]
-image3 = cv2.imread('C:\\Users\\darek\\Desktop\\Pyramid Games\\PythonApp\\PythonApp\\source_pics\\01_h.jpg')
+image3 = cv2.imread('C:\\Users\\darek\\Desktop\\Pyramid Games\\PythonApp\\PythonApp\\source_pics\\Image_05L.jpg')
 
 print(img_height)
 print(img_width)
@@ -81,22 +81,38 @@ ax.imshow(image2)
 ax=fig.add_subplot(3, 4, 2)
 ax.axis('off')
 ax.imshow(image3)
+
+duppa = frangi(cv2.cvtColor(image2, cv2.COLOR_BGR2GRAY))
+
+image1 = cv2.imread('C:\\Users\\darek\\Desktop\\Pyramid Games\\PythonApp\\PythonApp\\source_pics\\Image_05L.jpg') #czytam zdjec
+image = cv2.cvtColor(image1, cv2.COLOR_BGR2GRAY) #filtr na odcienie szarosci
+after = frangi(image) #filtr sobela
+after*= 10000
+after = cv2.normalize(after, None, alpha=0, beta=1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)
+binary = (after > 0.01) * 255 # fuknckaj tworzaca 0-1 czarno-biale zdjecie
+binary = np.uint8(binary)
+cv2.imshow('kurwa', after)
+cv2.imshow('kurwa2', binary)
+cv2.waitKey(0)
+
+
 #               TODO
 #frangi jest w imshow ax, zostaje lekki obrys środkowego jasniejszego punktu - to też kwestia testów
 #czyli ogólnie trzeba teraz: progowanie maski eksperckiej + progowanie(wynik frangiego + usunięta obramka oka)
 #wykrozystanie gotowych funkcji z bibliotek(jest w jego dokumentacji na ekursy) do 3 pomiarów
 # jak to będzie to mamy wszystko, zrobic test dla 3 lepszych wynikow 2 gorszych i odsyłamy
+
+
 ax=fig.add_subplot(3, 4, 3)
 ax.axis('off')
-ax.imshow(frangi(cv2.cvtColor(image2, cv2.COLOR_BGR2GRAY)))
+ax.imshow(duppa)
 
-ax=fig.add_subplot(3, 4, 4)
+ax = fig.add_subplot(3, 4, 4)
 ax.axis('off')
-ax.imshow(frangi(cv2.cvtColor(image2, cv2.COLOR_BGR2GRAY)))
+binary = (duppa > 1.5) * 255  # fuknckaj tworzaca 0-1 czarno-biale zdjecie
+binary = np.uint8(binary)
+ax.imshow(binary)
 
-ax=fig.add_subplot(3, 4, 4)
-ax.axis('off')
-ax.imshow(color_filter(image,circles,1.1,1.7))
 
 plt.show()
 #cv2.imshow('image',image)
