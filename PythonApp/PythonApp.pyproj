@@ -35,6 +35,95 @@
       <Architecture>X64</Architecture>
     </Interpreter>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="EyeBase\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="EyeBase\Image_01L.jpg" />
+    <Content Include="EyeBase\Image_01L_1stHO.png" />
+    <Content Include="EyeBase\Image_01L_2ndHO.png" />
+    <Content Include="EyeBase\Image_01R.jpg" />
+    <Content Include="EyeBase\Image_01R_1stHO.png" />
+    <Content Include="EyeBase\Image_01R_2ndHO.png" />
+    <Content Include="EyeBase\Image_02L.jpg" />
+    <Content Include="EyeBase\Image_02L_1stHO.png" />
+    <Content Include="EyeBase\Image_02L_2ndHO.png" />
+    <Content Include="EyeBase\Image_02R.jpg" />
+    <Content Include="EyeBase\Image_02R_1stHO.png" />
+    <Content Include="EyeBase\Image_02R_2ndHO.png" />
+    <Content Include="EyeBase\Image_03L.jpg" />
+    <Content Include="EyeBase\Image_03L_1stHO.png" />
+    <Content Include="EyeBase\Image_03L_2ndHO.png" />
+    <Content Include="EyeBase\Image_03R.jpg" />
+    <Content Include="EyeBase\Image_03R_1stHO.png" />
+    <Content Include="EyeBase\Image_03R_2ndHO.png" />
+    <Content Include="EyeBase\Image_04L.jpg" />
+    <Content Include="EyeBase\Image_04L_1stHO.png" />
+    <Content Include="EyeBase\Image_04L_2ndHO.png" />
+    <Content Include="EyeBase\Image_04R.jpg" />
+    <Content Include="EyeBase\Image_04R_1stHO.png" />
+    <Content Include="EyeBase\Image_04R_2ndHO.png" />
+    <Content Include="EyeBase\Image_05L.jpg" />
+    <Content Include="EyeBase\Image_05L_1stHO.png" />
+    <Content Include="EyeBase\Image_05L_2ndHO.png" />
+    <Content Include="EyeBase\Image_05R.jpg" />
+    <Content Include="EyeBase\Image_05R_1stHO.png" />
+    <Content Include="EyeBase\Image_05R_2ndHO.png" />
+    <Content Include="EyeBase\Image_06L.jpg" />
+    <Content Include="EyeBase\Image_06L_1stHO.png" />
+    <Content Include="EyeBase\Image_06L_2ndHO.png" />
+    <Content Include="EyeBase\Image_06R.jpg" />
+    <Content Include="EyeBase\Image_06R_1stHO.png" />
+    <Content Include="EyeBase\Image_06R_2ndHO.png" />
+    <Content Include="EyeBase\Image_07L.jpg" />
+    <Content Include="EyeBase\Image_07L_1stHO.png" />
+    <Content Include="EyeBase\Image_07L_2ndHO.png" />
+    <Content Include="EyeBase\Image_07R.jpg" />
+    <Content Include="EyeBase\Image_07R_1stHO.png" />
+    <Content Include="EyeBase\Image_07R_2ndHO.png" />
+    <Content Include="EyeBase\Image_08L.jpg" />
+    <Content Include="EyeBase\Image_08L_1stHO.png" />
+    <Content Include="EyeBase\Image_08L_2ndHO.png" />
+    <Content Include="EyeBase\Image_08R.jpg" />
+    <Content Include="EyeBase\Image_08R_1stHO.png" />
+    <Content Include="EyeBase\Image_08R_2ndHO.png" />
+    <Content Include="EyeBase\Image_09L.jpg" />
+    <Content Include="EyeBase\Image_09L_1stHO.png" />
+    <Content Include="EyeBase\Image_09L_2ndHO.png" />
+    <Content Include="EyeBase\Image_09R.jpg" />
+    <Content Include="EyeBase\Image_09R_1stHO.png" />
+    <Content Include="EyeBase\Image_09R_2ndHO.png" />
+    <Content Include="EyeBase\Image_10L.jpg" />
+    <Content Include="EyeBase\Image_10L_1stHO.png" />
+    <Content Include="EyeBase\Image_10L_2ndHO.png" />
+    <Content Include="EyeBase\Image_10R.jpg" />
+    <Content Include="EyeBase\Image_10R_1stHO.png" />
+    <Content Include="EyeBase\Image_10R_2ndHO.png" />
+    <Content Include="EyeBase\Image_11L.jpg" />
+    <Content Include="EyeBase\Image_11L_1stHO.png" />
+    <Content Include="EyeBase\Image_11L_2ndHO.png" />
+    <Content Include="EyeBase\Image_11R.jpg" />
+    <Content Include="EyeBase\Image_11R_1stHO.png" />
+    <Content Include="EyeBase\Image_11R_2ndHO.png" />
+    <Content Include="EyeBase\Image_12L.jpg" />
+    <Content Include="EyeBase\Image_12L_1stHO.png" />
+    <Content Include="EyeBase\Image_12L_2ndHO.png" />
+    <Content Include="EyeBase\Image_12R.jpg" />
+    <Content Include="EyeBase\Image_12R_1stHO.png" />
+    <Content Include="EyeBase\Image_12R_2ndHO.png" />
+    <Content Include="EyeBase\Image_13L.jpg" />
+    <Content Include="EyeBase\Image_13L_1stHO.png" />
+    <Content Include="EyeBase\Image_13L_2ndHO.png" />
+    <Content Include="EyeBase\Image_13R.jpg" />
+    <Content Include="EyeBase\Image_13R_1stHO.png" />
+    <Content Include="EyeBase\Image_13R_2ndHO.png" />
+    <Content Include="EyeBase\Image_14L.jpg" />
+    <Content Include="EyeBase\Image_14L_1stHO.png" />
+    <Content Include="EyeBase\Image_14L_2ndHO.png" />
+    <Content Include="EyeBase\Image_14R.jpg" />
+    <Content Include="EyeBase\Image_14R_1stHO.png" />
+    <Content Include="EyeBase\Image_14R_2ndHO.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
        Visual Studio and specify your pre- and post-build commands in
