@@ -94,8 +94,7 @@ def delete_circle(binaryImage,circles):
 
 def calculate_metrics(eyeBinary,goldPath,circles):
     goldMask = cv2.cvtColor(cv2.imread(eyeBaseDir +  'Image_05L_1stHO.png'), cv2.COLOR_BGR2GRAY) 
-    goldBinary = np.uint8( (goldMask>120) *255)
-    eyeBinary = np.uint8(eyeBinary *255)
+    goldBinary = goldMask>120
     acc = accuracy_score(goldBinary.flatten(), eyeBinary.flatten())
     spec = specificity_score(goldBinary.flatten(), eyeBinary.flatten(), average='weighted')
     sen = sensitivity_score(goldBinary.flatten(), eyeBinary.flatten(), average='weighted')
