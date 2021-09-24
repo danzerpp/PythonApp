@@ -7,7 +7,6 @@ import numpy as np
 import sys
 from skimage import color, data, io
 
-
 def color_filter(img,circles, red, blue):
     img2 = img.copy()
     for w in range(img_width):
@@ -92,51 +91,32 @@ def delete_circle(binaryImage,circles):
     return binDel
 def calculate_metrics(eyeBinary,goldPath,circles):
     goldMask = cv2.imread(eyeBaseDir +  'Image_05L_1stHO.png')
-
-     for w in range(img_width):
-        for h in range(img_height):   
+    goldBinary = goldMask>120
 
 
 eyeBaseDir = sys.path[1] + '\\EyeBase\\'
-
-
 image = cv2.imread(eyeBaseDir +  'Image_05L.jpg')
-
 
 img_height=image.shape[0]
 img_width=image.shape[1]
-image3 = cv2.imread(eyeBaseDir +  'Image_05L.jpg')
-
-print(img_height)
-print(img_width)
 
 circles=detect_circle(image.copy())
-#image=color_filter(image,circles,1.05,1.5)
-#cv2.imshow('sharpen',sharpen(image)  )
 
 bright =change_brightness(image, 20)
 green = color_filter(bright,circles,1.00,1.50)
 
-
-#frangiBright = frangi( cv2.cvtColor(bright, cv2.COLOR_BGR2GRAY))
 frangiGreen = frangi( cv2.cvtColor(green, cv2.COLOR_BGR2GRAY))
 
-#cv2.imshow('brightfrangi',frangiBright*700000)
-#cv2.imshow('greenfrangi',frangiGreen*700000)
-
-#binary = (frangiBright*100000 > 0.066) * 255 # fuknckaj tworzaca 0-1 czarno-biale zdjecie
-#binary = delete_circle(binary,circles)
-#binary = np.uint8(binary)
-binary2 = (frangiGreen*100000 > 0.063) * 255 # fuknckaj tworzaca 0-1 czarno-biale zdjecie
+binary2 = (frangiGreen*100000 > 0.063) # fuknckaj tworzaca 0-1 czarno-biale zdjecie
 binary2 = delete_circle(binary2,circles)
+
 circles[0][0][2] = circles[0][0][2] +1
 
-acc, sen, spec = calculate_metrics(binary2,"",circles)
-binary2 = np.uint8(binary2)
+cv2.imshow('great frangi',np.uint8(binary2*255))
+cv2.waitKey(0)
 
-#cv2.imshow('brightbinary',delete_circle(binary,circles) )
-#cv2.imshow('sharpenbright',change_brightness(sharpen(image))   )
-#cv2.waitKey(0)
+#acc, sen, spec = calculate_metrics(binary2,"",circles)
+
 
 
 fig, ax = plt.subplots(figsize=(6,6))
