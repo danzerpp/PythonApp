@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sys
 from skimage import color, data, io
+from sklearn.metrics import accuracy_score,balanced_accuracy_score, jaccard_score
+from imblearn.metrics import sensitivity_score, specificity_score, geometric_mean_score
 
 def color_filter(img,circles, red, blue):
     img2 = img.copy()
@@ -89,14 +91,22 @@ def delete_circle(binaryImage,circles):
                 binDel[h,w] = False
                 binDel[h,w]= False
     return binDel
+
 def calculate_metrics(eyeBinary,goldPath,circles):
-    goldMask = cv2.imread(eyeBaseDir +  'Image_05L_1stHO.png')
-    goldBinary = goldMask>120
+    goldMask = cv2.cvtColor(cv2.imread(eyeBaseDir +  'Image_05L_1stHO.png'), cv2.COLOR_BGR2GRAY) 
+    goldBinary = np.uint8( (goldMask>120) *255)
+    eyeBinary = np.uint8(eyeBinary *255)
+    acc = accuracy_score(goldBinary.flatten(), eyeBinary.flatten())
+    spec = specificity_score(goldBinary.flatten(), eyeBinary.flatten(), average='weighted')
+    sen = sensitivity_score(goldBinary.flatten(), eyeBinary.flatten(), average='weighted')
+    print('acc - ' + str(acc))
+    print('spec - ' + str(spec))
+    print('sen - ' + str(sen))
+    return acc, spec ,sen
 
 
 eyeBaseDir = sys.path[1] + '\\EyeBase\\'
 image = cv2.imread(eyeBaseDir +  'Image_05L.jpg')
-
 img_height=image.shape[0]
 img_width=image.shape[1]
 
@@ -112,10 +122,10 @@ binary2 = delete_circle(binary2,circles)
 
 circles[0][0][2] = circles[0][0][2] +1
 
-cv2.imshow('great frangi',np.uint8(binary2*255))
-cv2.waitKey(0)
+#cv2.imshow('great frangi',np.uint8(binary2*255))
+#cv2.waitKey(0)
 
-#acc, sen, spec = calculate_metrics(binary2,"",circles)
+acc, sen, spec = calculate_metrics(binary2,"",circles)
 
 
 
