@@ -1,11 +1,15 @@
 from skimage.data import camera
-from skimage.filters import frangi, hessian, sobel
+from skimage.filters import frangi
 import cv2
+import os
 import matplotlib.pyplot as plt
 import numpy as np
+import sys
+from skimage import color, data, io
+from sklearn.metrics import accuracy_score,balanced_accuracy_score, jaccard_score
+from imblearn.metrics import sensitivity_score, specificity_score, geometric_mean_score
 
-
-def color_filter(img,circles, red, blue):
+def color_filter(img,circles, red, green):
     img2 = img.copy()
     for w in range(img_width):
         for h in range(img_height):            
@@ -13,8 +17,8 @@ def color_filter(img,circles, red, blue):
                 #zwieksz lekko kolor czerwony
                 img2[h,w][2]=min(255,int(img[h,w][2]*red))
                 #zwieksz barwe zielona, proporcjonalnie do jej nasycenia
-                img2[h,w][1]=min(int(img[h,w][1]*blue),255)
-    #cv2.imshow('green_filter',img)
+                img2[h,w][1]=min(int(img[h,w][1]*green),255)
+    #cv2.imshow('green_filter',img)druga 
     #cv2.waitKey(0)
     return img2
 
@@ -26,9 +30,8 @@ def detect_circle(img): #poszukuje obrysu oka
      minradius=int(0.4*min_length)
      #alg. HoughCircles znajduje koło na zdjęciu, na wejciu img w skali szarosci
      circles = cv2.HoughCircles(imgGray,cv2.HOUGH_GRADIENT,1,20, param1=50,param2=30,minRadius=minradius,maxRadius=int(max_length*0.5))
-
+     circles[0][0][2] = circles[0][0][2] -1
      if circles is not None:
-         print('is cricle')
          circles = np.uint16(np.around(circles))#zaokragla war. do war. calkowitych
          x=int(circles[0][0][0])
          y=int(circles[0][0][1])
@@ -48,75 +51,71 @@ def in_circle(circles,w,h,less=0):
             in_c=True
     return in_c
 
-image = cv2.imread('C:\\Users\\darek\\Desktop\\Pyramid Games\\PythonApp\\PythonApp\\source_pics\\Image_05L.jpg')
+def delete_circle(binaryImage,circles):
+    binDel = binaryImage.copy()
+    for w in range(img_width):
+        for h in range(img_height):            
+            if(not in_circle(circles,w,h)):
+                binDel[h,w] = False
+                binDel[h,w] = False
+                binDel[h,w]= False
+    return binDel
 
+#def change_brightness(img, value=30):
+    #imgBright = img.copy()
+    #hsv = cv2.cvtColor(imgBright, cv2.COLOR_BGR2HSV)
+    #h, s, v = cv2.split(hsv)
+    #v = cv2.add(v,value)
+    #v[v > 255] = 255
+    #v[v < 0] = 0
+    #final_hsv = cv2.merge((h, s, v))
+    #imgBright = cv2.cvtColor(final_hsv, cv2.COLOR_HSV2BGR)
+    #return imgBright
+
+
+
+def calculate_metrics(eyeBinary,goldPath,circles):
+    goldMask = cv2.cvtColor(cv2.imread('C:\\Users\\darek\\Desktop\\Pyramid Games\\PythonApp\\PythonApp\\source_pics\\Image_05L_1stHO.png'), cv2.COLOR_BGR2GRAY) 
+    goldBinary = goldMask>120
+    goldBinary = delete_circle(goldBinary,circles)
+    
+    acc = accuracy_score(goldBinary.flatten(), eyeBinary.flatten())
+    spec = specificity_score(goldBinary.flatten(), eyeBinary.flatten(), average='weighted')
+    sen = sensitivity_score(goldBinary.flatten(), eyeBinary.flatten(), average='weighted')
+    
+    acc
+    sen
+    spec
+    
+    cv2.imshow('eyeFrangi', np.uint8(eyeBinary*255))
+    cv2.imshow('eyeGold', np.uint8(goldBinary*255))
+    cv2.waitKey(0)
+    
+    print('acc - ' + str(acc))
+    print('spec - ' + str(spec))
+    print('sen - ' + str(sen))
+    return acc, spec ,sen
+
+eyeBaseDir = 'C:\\Users\\darek\\Desktop\\Pyramid Games\\PythonApp\\PythonApp\\source_pics\\Image_05L.jpg'
+image = cv2.imread(eyeBaseDir)
 img_height=image.shape[0]
 img_width=image.shape[1]
-image3 = cv2.imread('C:\\Users\\darek\\Desktop\\Pyramid Games\\PythonApp\\PythonApp\\source_pics\\Image_05L.jpg')
-
-print(img_height)
-print(img_width)
 
 circles=detect_circle(image.copy())
-image2=color_filter(image,circles,1.05,1.5)
-image3 = color_filter(image,circles,1.05,1.6)
 
-fig, ax = plt.subplots(figsize=(6,6))
+#bright =change_brightness(image, 20)
+greenImg = color_filter(image,circles,1.00,1.50)
 
-#cv2.imshow('image2', image2)
-#cv2.imshow('image2 gray', frangi(image2))
-#cv2.imshow('image2 frangi', image2frangi)
+frangiGreen = frangi(cv2.cvtColor(greenImg, cv2.COLOR_BGR2GRAY))
+
+binary2 = (frangiGreen*100000 > 0.09) # fuknckaj tworzaca 0-1 czarno-biale zdjecie
+binary2 = delete_circle(binary2,circles)
+
+#cv2.imshow('great frangi',np.uint8(binary2*255))
 #cv2.waitKey(0)
 
-#cv2.imshow('image3',image3)
-#cv2.imshow('image3 gray', cv2.cvtColor(image3, cv2.COLOR_BGR2GRAY))
-#cv2.imshow('image3 frangi', image3frangi)
-#cv2.waitKey(0)
+acc, sen, spec = calculate_metrics(binary2,"",circles)
 
-cv2.destroyAllWindows()
-ax=fig.add_subplot(3, 4, 1)
-ax.axis('off')
-ax.imshow(image2)
-
-ax=fig.add_subplot(3, 4, 2)
-ax.axis('off')
-ax.imshow(image3)
-
-duppa = frangi(cv2.cvtColor(image2, cv2.COLOR_BGR2GRAY))
-
-image1 = cv2.imread('C:\\Users\\darek\\Desktop\\Pyramid Games\\PythonApp\\PythonApp\\source_pics\\Image_05L.jpg') #czytam zdjec
-image = cv2.cvtColor(image1, cv2.COLOR_BGR2GRAY) #filtr na odcienie szarosci
-after = frangi(image) #filtr sobela
-after*= 10000
-after = cv2.normalize(after, None, alpha=0, beta=1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)
-binary = (after > 0.01) * 255 # fuknckaj tworzaca 0-1 czarno-biale zdjecie
-binary = np.uint8(binary)
-cv2.imshow('kurwa', after)
-cv2.imshow('kurwa2', binary)
-cv2.waitKey(0)
-
-
-#               TODO
-#frangi jest w imshow ax, zostaje lekki obrys środkowego jasniejszego punktu - to też kwestia testów
-#czyli ogólnie trzeba teraz: progowanie maski eksperckiej + progowanie(wynik frangiego + usunięta obramka oka)
-#wykrozystanie gotowych funkcji z bibliotek(jest w jego dokumentacji na ekursy) do 3 pomiarów
-# jak to będzie to mamy wszystko, zrobic test dla 3 lepszych wynikow 2 gorszych i odsyłamy
-
-
-ax=fig.add_subplot(3, 4, 3)
-ax.axis('off')
-ax.imshow(duppa)
-
-ax = fig.add_subplot(3, 4, 4)
-ax.axis('off')
-binary = (duppa > 1.5) * 255  # fuknckaj tworzaca 0-1 czarno-biale zdjecie
-binary = np.uint8(binary)
-ax.imshow(binary)
-
-
-plt.show()
-#cv2.imshow('image',image)
-#cv2.waitKey(0)
 
 
 
